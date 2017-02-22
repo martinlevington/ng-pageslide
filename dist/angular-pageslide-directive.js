@@ -112,12 +112,7 @@
 
                     body.appendChild(slider);
 
-                    slider.style.zIndex = param.zindex;
-                    slider.style.position = 'fixed';
-                    slider.style.transitionDuration = param.speed + 's';
-                    slider.style.webkitTransitionDuration = param.speed + 's';
-                    slider.style.height = param.size;
-                    slider.style.transitionProperty = 'top, bottom, left, right';
+
 
                     if (param.push) {
                         body.style.position = 'absolute';
@@ -146,7 +141,7 @@
 
                     slider.addEventListener('transitionend', onTransitionEnd);
 
-                    initSlider();
+
 
                     function initSlider() {
                         switch (param.side) {
@@ -155,30 +150,36 @@
                                 slider.style.height = '100%';
                                 slider.style.top = '0px';
                                 slider.style.bottom = '0px';
-                                slider.style.right = '0px';
+                                slider.style.right = "-" + param.size;
                                 break;
                             case 'left':
                                 slider.style.width = param.size;
                                 slider.style.height = '100%';
                                 slider.style.top = '0px';
                                 slider.style.bottom = '0px';
-                                slider.style.left = '0px';
+                                slider.style.left = "-" + param.size;
                                 break;
                             case 'top':
                                 slider.style.height = param.size;
                                 slider.style.width = '100%';
                                 slider.style.left = '0px';
-                                slider.style.top = '0px';
+                                slider.style.top = "-" + param.size;
                                 slider.style.right = '0px';
                                 break;
                             case 'bottom':
                                 slider.style.height = param.size;
                                 slider.style.width = '100%';
-                                slider.style.bottom = '0px';
+                                slider.style.bottom = "-" + param.size;
                                 slider.style.left = '0px';
                                 slider.style.right = '0px';
                                 break;
                         }
+
+                        slider.style.zIndex = param.zindex;
+                        slider.style.position = 'fixed';
+                        slider.style.transitionDuration = param.speed + 's';
+                        slider.style.webkitTransitionDuration = param.speed + 's';
+                        slider.style.transitionProperty = 'top, bottom, left, right';
                     }
 
                     function psClose(slider, param) {
@@ -288,12 +289,12 @@
 
                     // Watchers
 
-                    scope.$watch('psOpen', function(value) {
-                        if (!!value) {
-                            psOpen(slider, param);
-                        } else {
-                            psClose(slider, param);
-                        }
+                    scope.$watch('psOpen', function (value) {
+                            if (!!value) {
+                                psOpen(slider, param);
+                            } else {
+                                psClose(slider, param);
+                            }
                     });
 
                     scope.$watch('psSize', function(newValue, oldValue) {
@@ -326,7 +327,8 @@
                         });
                     }
 
-                }
+                    initSlider();
+                } // end link
             };
         }]);
 }));
