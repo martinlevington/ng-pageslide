@@ -17,21 +17,19 @@ describe('ng-pageslide: ', function() {
       }
     ]);
     compilePageslide = function (html) {
-      inject([
-        '$compile',
-        '$rootScope',
-        '$document',
-        '$timeout',
-        function(_$compile_, $rootScope, $document, _$timeout_){
+       inject(
+        function(_$compile_, _$rootScope_, _$document_, _$timeout_){
           $compile = _$compile_;
           $timeout = _$timeout_;
+          $document = _$document_;
+          $rootScope = _$rootScope_;
           scope = $rootScope.$new();
           element = angular.element(html);
           $compile(element)(scope);
           scope.$digest();
           isolateScope = element.isolateScope();
         }
-      ]);
+      );
     };
     done();
   });
@@ -397,9 +395,10 @@ describe('ng-pageslide: ', function() {
     describe('left pageslide', function () {
       describe('by default', function () {
         beforeEach(function (done) {
+            angular.element(document.body).append('<div id="customContainer">custom container text</div>');
           compilePageslide([
             '<div>',
-            '<div pageslide ps-open="is_open" ps-side="left">',
+            '<div pageslide ps-open="is_open" ps-side="left" ps-container="customContainer">',
             '<div id="target">',
             '<p>some random content...</p>',
             '<a id="target-close" href="#">Click to close</a>',
@@ -413,6 +412,12 @@ describe('ng-pageslide: ', function() {
         it('should set the appropriate styles', function (done) {
           // Check for DOM Manipulation
           var slider = angular.element(document.body);
+          console.log(document.body);
+console.log(slider);
+console.log('martin');
+console.log(slider[0]);
+
+
           expect(slider.html()).toContain('height: 100%;');
           expect(slider.html()).toContain('top: 0px;');
           expect(slider.html()).toContain('bottom: 0px;');
@@ -590,6 +595,11 @@ describe('ng-pageslide: ', function() {
 
         it('should set the appropriate styles', function (done) {
           // Check for DOM Manipulation
+  console.log(done);
+          console.log(document.body);
+          console.log(document.querySelector('.ng-pageslide'));
+          console.log('$document:'+$document.body);
+
           var slider = angular.element(document.body);
           expect(slider.html()).toContain('width: 100%;');
           expect(slider.html()).toContain('left: 0px;');
